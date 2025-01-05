@@ -70,3 +70,52 @@ pub fn derangements(iterable: Vec<T>, k: T) -> Vec<Vec<T>> {
 // - examples
 // - tests
 // - docstrings
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+    use itertools::assert_equal;
+
+    #[test]
+    fn test_range_manual() {
+        assert_equal(derangements_range(2), [[1, 0]]);
+        assert_equal(derangements_range(3), [[2, 0, 1], [1, 2, 0]]);
+        assert_equal(
+            derangements_range(4),
+            [
+                [3, 0, 1, 2],
+                [2, 3, 1, 0],
+                [2, 0, 3, 1],
+                [3, 2, 0, 1],
+                [1, 3, 0, 2],
+                [1, 2, 3, 0],
+                [1, 0, 3, 2],
+                [2, 3, 0, 1],
+                [3, 2, 1, 0],
+            ],
+        );
+        assert_eq!(derangements_range(8).len(), 14833);
+    }
+
+    #[test]
+    fn test_nonrange_range() {
+        for k in 0..8 {
+            assert_equal(
+                derangements_range(k).into_iter().sorted(),
+                derangements((0..k).collect_vec(), k),
+            );
+        }
+    }
+
+    #[test]
+    fn test_nonrange_manual() {
+        assert_equal(derangements(vec![0, 2], 2), [[2, 0]]);
+        assert_equal(
+            derangements(vec![0, 1, 3], 3),
+            [[1, 0, 3], [1, 3, 0], [3, 0, 1]],
+        );
+        assert_equal(derangements(vec![0, 1, 3], 2), [[1, 0], [1, 3], [3, 0]]);
+        assert_equal(derangements(vec![0, 1, 1], 3), [[1, 0, 1], [1, 0, 1]]);
+        assert_equal(derangements(vec![0, 1, 1], 2), [[1, 0], [1, 0]]);
+    }
+}
