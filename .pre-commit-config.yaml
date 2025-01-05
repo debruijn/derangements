@@ -16,18 +16,18 @@ repos:
   - id: format
     name: format
     entry: make format
-    types: [python, rust]
+    types: [rust]
     language: system
     pass_filenames: false
-  - id: lint-python
-    name: lint Python
-    entry: make lint-python
-    types: [python]
+  - id: lint
+    name: lint
+    entry: make lint
+    types: [rust]
     language: system
     pass_filenames: false
-  - id: lint-rust
-    name: lint Rust
-    entry: make lint-rust
+  - id: test
+    name: test
+    entry: cargo test
     types: [rust]
     language: system
     pass_filenames: false
