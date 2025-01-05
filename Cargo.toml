@@ -1,0 +1,19 @@
+[package]
+name = "derangements"
+version = "0.1.0"
+edition = "2021"
+description = "Generate derangements of an iterable"
+license = "MIT OR Apache-2.0"
+documentation = "https://docs.rs/derangements"
+repository = "https://github.com/debruijn/derangements"
+authors = ["Bert de Bruijn"]
+keywords = ["derangements", "permutations", "itertools", "iterables"]
+
+[dependencies]
+itertools = "0.14.0"
+
+[profile.dev]
+opt-level = 3
+
+[profile.release]
+opt-level = 3
