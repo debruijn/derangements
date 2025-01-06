@@ -4,7 +4,6 @@ type T = usize;
 
 pub fn derangements_range(n: T) -> Vec<Vec<T>> {
     match n {
-        2 => vec![vec![1, 0]],
         1 => Vec::new(),
         0 => vec![Vec::new()],
         _ => {
@@ -41,11 +40,7 @@ pub fn derangements_range(n: T) -> Vec<Vec<T>> {
                         }
                         temp.push(*el)
                     }
-                    if k == temp2.len() {
-                        temp.push(n - 1)
-                    }
                     temp.push(k);
-
                     derangements.push(temp);
                 }
             }
