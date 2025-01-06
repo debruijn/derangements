@@ -26,3 +26,11 @@ test:
 
 .PHONY: all
 all: format test lint
+
+.PHONY: doc
+doc:
+	cargo doc --open
+
+.PHONY: coverage
+coverage:
+	cargo llvm-cov --open  # Make sure you have llvm-cov installed, see https://lib.rs/crates/cargo-llvm-cov
