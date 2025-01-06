@@ -23,6 +23,7 @@ Ideally the following would be added or explored:
 - add random_derangement, at least for the default derangement types
 - add examples/use cases of how/when to use this
 - add docstrings
+- speed up derangements_range by caching earlier derangements results
 
 If you have more ideas, let me know!
 
