@@ -62,15 +62,6 @@ pub fn derangements(iterable: Vec<T>, k: T) -> Vec<Vec<T>> {
         .collect_vec()
 }
 
-// To add:
-// - dinstict_derangements
-// - derangement_self
-// - derangement_map
-// - random_derangement
-// - examples
-// - tests
-// - docstrings
-
 #[cfg(test)]
 mod tests {
     use super::*;
