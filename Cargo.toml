@@ -8,6 +8,9 @@ documentation = "https://docs.rs/derangements"
 repository = "https://github.com/debruijn/derangements"
 authors = ["Bert de Bruijn"]
 keywords = ["derangements", "permutations", "itertools", "iterables"]
+exclude = [
+    ".github/*",
+]
 
 [dependencies]
 itertools = "0.14.0"
