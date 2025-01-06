@@ -15,7 +15,7 @@ type T = usize;
 /// ```
 /// use itertools::{assert_equal, Itertools};
 /// use derangements::derangements_range;
-/// assert_equal(derangements_range(3).into_iter().sorted(), [[1, 2, 0], [2, 0, 1]]);
+/// assert_equal(derangements_range(3), [[2, 0, 1], [1, 2, 0]]);
 /// ```
 pub fn derangements_range(n: T) -> Vec<Vec<T>> {
     match n {
@@ -78,13 +78,13 @@ pub fn derangements_range(n: T) -> Vec<Vec<T>> {
 /// ```
 /// use itertools::{assert_equal, Itertools};
 /// use derangements::derangements;
-/// assert_equal(derangements(vec![0, 1, 2], 3).into_iter().sorted(), [[1, 2, 0], [2, 0, 1]]);
+/// assert_equal(derangements(vec![0, 1, 2], 3), [[1, 2, 0], [2, 0, 1]]);
 ///
 /// // There can be repeated values in the input, which will not be deduplicated
-/// assert_equal(derangements(vec![0, 1, 1], 3).into_iter().sorted(), [[1, 0, 1], [1, 0, 1]]);
+/// assert_equal(derangements(vec![0, 1, 1], 3), [[1, 0, 1], [1, 0, 1]]);
 ///
 /// // The length of the derangements can be shorter than the input iterable
-/// assert_equal(derangements(vec![0, 1, 2], 2).into_iter().sorted(), [[1, 0], [1, 2], [2, 0]]);
+/// assert_equal(derangements(vec![0, 1, 2], 2), [[1, 0], [1, 2], [2, 0]]);
 /// ```
 pub fn derangements(iterable: Vec<T>, k: T) -> Vec<Vec<T>> {
     iterable
