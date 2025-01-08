@@ -7,7 +7,7 @@
 //! ```
 //! use itertools::{assert_equal, Itertools};
 //! use derangements::derangements;
-//! assert_equal(derangements(vec![0, 1, 2], 3), [[1, 2, 0], [2, 0, 1]]);
+//! assert_equal(derangements(vec![0usize, 1, 2], 3), [[1, 2, 0], [2, 0, 1]]);
 //! ```
 
 mod derangements;

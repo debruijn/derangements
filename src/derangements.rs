@@ -1,4 +1,5 @@
 use itertools::Itertools;
+use std::convert::TryFrom;
 
 /// Derange all elements of a range of 0 to n (non-inclusive).
 ///
@@ -132,19 +133,27 @@ pub fn derangements_range_fast(n: usize) -> Vec<Vec<usize>> {
 /// ```
 /// use itertools::{assert_equal, Itertools};
 /// use derangements::derangements;
-/// assert_equal(derangements(vec![0, 1, 2], 3), [[1, 2, 0], [2, 0, 1]]);
+/// assert_equal(derangements(vec![0usize, 1, 2], 3), [[1, 2, 0], [2, 0, 1]]);
 ///
 /// // There can be repeated values in the input, which will not be deduplicated
-/// assert_equal(derangements(vec![0, 1, 1], 3), [[1, 0, 1], [1, 0, 1]]);
+/// assert_equal(derangements(vec![0u8, 1, 1], 3), [[1, 0, 1], [1, 0, 1]]);
 ///
 /// // The length of the derangements can be shorter than the input iterable
-/// assert_equal(derangements(vec![0, 1, 2], 2), [[1, 0], [1, 2], [2, 0]]);
+/// assert_equal(derangements(vec![0isize, 1, 2], 2), [[1, 0], [1, 2], [2, 0]]);
 /// ```
-pub fn derangements(iterable: Vec<usize>, k: usize) -> Vec<Vec<usize>> {
+pub fn derangements<T>(iterable: Vec<T>, k: usize) -> Vec<Vec<T>>
+where
+    T: Clone + TryInto<usize>,
+    usize: TryFrom<T>,
+{
     iterable
         .into_iter()
         .permutations(k)
-        .filter(|i| !i.iter().enumerate().any(|x| x.0 == *x.1))
+        .filter(|i| {
+            !i.iter()
+                .enumerate()
+                .any(|x| x.0 == usize::try_from(x.1.clone()).unwrap_or(usize::MAX))
+        })
         .collect_vec()
 }
 
@@ -207,14 +216,17 @@ mod tests {
 
     #[test]
     fn test_nonrange_manual() {
-        assert_equal(derangements(vec![0, 2], 2), [[2, 0]]);
+        assert_equal(derangements(vec![0usize, 2], 2), [[2, 0]]);
         assert_equal(
-            derangements(vec![0, 1, 3], 3),
+            derangements(vec![0usize, 1, 3], 3),
             [[1, 0, 3], [1, 3, 0], [3, 0, 1]],
         );
-        assert_equal(derangements(vec![0, 1, 3], 2), [[1, 0], [1, 3], [3, 0]]);
-        assert_equal(derangements(vec![0, 1, 1], 3), [[1, 0, 1], [1, 0, 1]]);
-        assert_equal(derangements(vec![0, 1, 1], 2), [[1, 0], [1, 0]]);
+        assert_equal(
+            derangements(vec![0usize, 1, 3], 2),
+            [[1, 0], [1, 3], [3, 0]],
+        );
+        assert_equal(derangements(vec![0usize, 1, 1], 3), [[1, 0, 1], [1, 0, 1]]);
+        assert_equal(derangements(vec![0usize, 1, 1], 2), [[1, 0], [1, 0]]);
     }
 
     #[test]
