@@ -16,6 +16,10 @@ use std::convert::TryFrom;
 /// use derangements::derangements_range;
 /// assert_equal(derangements_range(3), [[2, 0, 1], [1, 2, 0]]);
 /// ```
+///
+/// This version is slower than ``derange_range_fast`` but
+/// consumes less memory.
+///
 pub fn derangements_range(n: usize) -> Vec<Vec<usize>> {
     match n {
         1 => Vec::new(),
@@ -63,6 +67,21 @@ pub fn derangements_range(n: usize) -> Vec<Vec<usize>> {
     }
 }
 
+/// Derange all elements of a range of 0 to n (non-inclusive) with caching.
+///
+/// # Arguments
+///
+/// * `n`: usize integer that determines the range to derange
+///
+/// returns: Vec<Vec<usize>>
+///
+/// # Examples
+///
+/// ```
+/// use itertools::{assert_equal, Itertools};
+/// use derangements::derangements_range_fast;
+/// assert_equal(derangements_range_fast(3), [[2, 0, 1], [1, 2, 0]]);
+/// ```
 pub fn derangements_range_fast(n: usize) -> Vec<Vec<usize>> {
     match n {
         1 => Vec::new(),
@@ -132,21 +151,71 @@ pub fn derangements_range_fast(n: usize) -> Vec<Vec<usize>> {
 ///
 /// ```
 /// use itertools::{assert_equal, Itertools};
-/// use derangements::derangements;
-/// assert_equal(derangements(vec![0, 1, 2], 3), [[1, 2, 0], [2, 0, 1]]);
+/// use derangements::derangements_vec;
+/// assert_equal(derangements_vec(vec![0, 1, 2], 3), [[1, 2, 0], [2, 0, 1]]);
 ///
 /// // There can be repeated values in the input, which will not be deduplicated
-/// assert_equal(derangements(vec![0, 1, 1], 3), [[1, 0, 1], [1, 0, 1]]);
+/// assert_equal(derangements_vec(vec![0, 1, 1], 3), [[1, 0, 1], [1, 0, 1]]);
 ///
 /// // The length of the derangements can be shorter than the input iterable
-/// assert_equal(derangements(vec![0, 1, 2], 2), [[1, 0], [1, 2], [2, 0]]);
+/// assert_equal(derangements_vec(vec![0, 1, 2], 2), [[1, 0], [1, 2], [2, 0]]);
 ///
 /// // There can be values that are outside the range of the indices
-/// assert_equal(derangements(vec![0, 1, -1], 3), [[1, 0, -1], [1, -1, 0], [-1, 0, 1]]);
+/// assert_equal(derangements_vec(vec![0, 1, -1], 3), [[1, 0, -1], [1, -1, 0], [-1, 0, 1]]);
 /// ```
-pub fn derangements<T>(iterable: Vec<T>, k: usize) -> Vec<Vec<T>>
+pub fn derangements_vec<T>(iterable: Vec<T>, k: usize) -> Vec<Vec<T>>
 where
     T: Clone + TryInto<usize>,
+    usize: TryFrom<T>,
+{
+    derangements(iterable.into_iter(), k)
+}
+
+/// Derange k or all elements of an iterable.
+///
+/// # Arguments
+///
+/// * `iterable`: Vec<usize> containing the iterable
+/// * `k`: usize integer that determines how many elements each derangement should have
+///
+/// returns: Vec<Vec<usize>>
+///
+/// # Examples
+///
+/// ```
+/// use itertools::{assert_equal, Itertools};
+/// use derangements::derangements;
+/// assert_equal(derangements(vec![0, 1, 2].into_iter(), 3), [[1, 2, 0], [2, 0, 1]]);
+///
+/// // There can be repeated values in the input, which will not be deduplicated
+/// assert_equal(derangements(vec![0, 1, 1].into_iter(), 3), [[1, 0, 1], [1, 0, 1]]);
+///
+/// // The length of the derangements can be shorter than the input iterable
+/// assert_equal(derangements(vec![0, 1, 2].into_iter(), 2), [[1, 0], [1, 2], [2, 0]]);
+///
+/// // There can be values that are outside the range of the indices
+/// assert_equal(derangements(vec![0, 1, -1].into_iter(), 3), [[1, 0, -1], [1, -1, 0], [-1, 0, 1]]);
+/// ```
+pub fn derangements<T, U>(iterable: T, k: usize) -> Vec<Vec<U>>
+where
+    T: Iterator<Item = U>,
+    <T as Iterator>::Item: Clone,
+    usize: TryFrom<<T as Iterator>::Item>,
+{
+    iterable
+        .into_iter()
+        .permutations(k)
+        .filter(|i| {
+            !i.iter()
+                .enumerate()
+                .any(|x| x.0 == usize::try_from(x.1.clone()).unwrap_or(usize::MAX))
+        })
+        .collect_vec()
+}
+
+pub fn derangements_box<T>(iterable: Box<dyn Iterator<Item = T>>, k: usize) -> Vec<Vec<T>>
+where
+    T: Clone,
     usize: TryFrom<T>,
 {
     iterable
@@ -212,21 +281,21 @@ mod tests {
         for k in 0..8 {
             assert_equal(
                 derangements_range(k).into_iter().sorted(),
-                derangements((0..k).collect_vec(), k),
+                derangements((0..k), k),
             );
         }
     }
 
     #[test]
     fn test_nonrange_manual() {
-        assert_equal(derangements(vec![0, 2], 2), [[2, 0]]);
+        assert_equal(derangements_vec(vec![0, 2], 2), [[2, 0]]);
         assert_equal(
-            derangements(vec![0, 1, 3], 3),
+            derangements_vec(vec![0, 1, 3], 3),
             [[1, 0, 3], [1, 3, 0], [3, 0, 1]],
         );
-        assert_equal(derangements(vec![0, 1, 3], 2), [[1, 0], [1, 3], [3, 0]]);
-        assert_equal(derangements(vec![0, 1, 1], 3), [[1, 0, 1], [1, 0, 1]]);
-        assert_equal(derangements(vec![0, 1, 1], 2), [[1, 0], [1, 0]]);
+        assert_equal(derangements_vec(vec![0, 1, 3], 2), [[1, 0], [1, 3], [3, 0]]);
+        assert_equal(derangements_vec(vec![0, 1, 1], 3), [[1, 0, 1], [1, 0, 1]]);
+        assert_equal(derangements_vec(vec![0, 1, 1], 2), [[1, 0], [1, 0]]);
     }
 
     #[test]
@@ -238,14 +307,17 @@ mod tests {
             let between = Instant::now();
             _ = derangements_range_fast(k).len();
             let between2 = Instant::now();
-            _ = derangements((0..k).collect_vec(), k).len();
+            _ = derangements((0..k), k).len();
             let after = Instant::now();
+            _ = derangements_box::<usize>(Box::from(0..k), k).len();
+            let after2 = Instant::now();
             println!(
-                "{:?}, range old {:?}, range new {:?}, non-range {:?}",
+                "{:?}, range old {:?}, range new {:?}, non-range {:?}, box: {:?}",
                 k,
                 between - before,
                 between2 - between,
-                after - between2
+                after - between2,
+                after2 - after
             )
         }
     }
