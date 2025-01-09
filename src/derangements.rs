@@ -8,7 +8,7 @@ use std::hash::Hash;
 ///
 /// * `n`: usize integer that determines the range to derange
 ///
-/// returns: Vec<Vec<usize>>
+/// returns: `Vec<Vec<usize>>`
 ///
 /// # Examples
 ///
@@ -74,7 +74,7 @@ pub fn derangements_range(n: usize) -> Vec<Vec<usize>> {
 ///
 /// * `n`: usize integer that determines the range to derange
 ///
-/// returns: Vec<Vec<usize>>
+/// returns: `Vec<Vec<usize>>`
 ///
 /// # Examples
 ///
@@ -143,10 +143,10 @@ pub fn derangements_range_fast(n: usize) -> Vec<Vec<usize>> {
 ///
 /// # Arguments
 ///
-/// * `iterable`: Vec<T> with type T having Clone and usize::TryFrom<T>
-/// * `k`: usize integer that determines how many elements each derangement should have
+/// * `iterable`: `Vec<T>` with type T having Clone and `usize::TryFrom<T>`
+/// * `k`: `usize` integer that determines how many elements each derangement should have
 ///
-/// returns: Vec<Vec<T>>
+/// returns: `Vec<Vec<T>>`
 ///
 /// # Examples
 ///
@@ -176,10 +176,10 @@ where
 ///
 /// # Arguments
 ///
-/// * `iterable`: Vec<T> containing the iterable of items of type U that have Clone and usize::TryFrom<U>
-/// * `k`: usize integer that determines how many elements each derangement should have
+/// * `iterable`: `Vec<T>` containing the iterable of items of type `U` that have Clone and `usize::TryFrom<U>`
+/// * `k`: `usize` integer that determines how many elements each derangement should have
 ///
-/// returns: Vec<Vec<U>>
+/// returns: `Vec<Vec<U>>`
 ///
 /// # Examples
 ///
@@ -218,10 +218,10 @@ where
 ///
 /// # Arguments
 ///
-/// * `iterable`: Box<dyn Iterator<Item = T>> with T having Clone and usize::TryFrom<T>
-/// * `k`: usize integer that determines how many elements each derangement should have
+/// * `iterable`: Box<dyn Iterator<Item = T>> with T having Clone and `usize::TryFrom<T>`
+/// * `k`: `usize` integer that determines how many elements each derangement should have
 ///
-/// returns: Vec<Vec<T>>
+/// returns: `Vec<Vec<T>>`
 ///
 /// # Examples
 ///
@@ -251,10 +251,10 @@ where
 ///
 /// # Arguments
 ///
-/// * `iterable`: Vec<T> containing the iterable of items of type U that have Clone and usize::TryFrom<U>
-/// * `k`: usize integer that determines how many elements each derangement should have
+/// * `iterable`: `Vec<T>` containing the iterable of items of type `U` that have Clone and `usize::TryFrom<U>`
+/// * `k`: `usize` integer that determines how many elements each derangement should have
 ///
-/// returns: Vec<Vec<U>>
+/// returns: `Vec<Vec<U>>`
 ///
 /// # Examples
 ///

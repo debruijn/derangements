@@ -8,10 +8,10 @@ use std::hash::Hash;
 ///
 /// # Arguments
 ///
-/// * `iterable`: Vec<T> with T having Clone and PartialEq, and usize::TryFrom<T>
-/// * `k`: usize integer that determines how many elements each permutation should have
+/// * `iterable`: `Vec<T>` with T having Clone and PartialEq, and `usize::TryFrom<T>`
+/// * `k`: `usize` integer that determines how many elements each permutation should have
 ///
-/// returns: Vec<Vec<T>>
+/// returns: `Vec<Vec<T>>`
 ///
 /// # Examples
 ///
@@ -44,11 +44,11 @@ where
 ///
 /// # Arguments
 ///
-/// * `iterable`: Vec<T> with T having Clone and PartialEq, and usize::TryFrom<T>
-/// * `k`: usize integer that determines how many elements each permutation should have
-/// * `restrict`: Vec<T> with the restricted values for each index
+/// * `iterable`: `Vec<T>` with T having Clone and PartialEq, and `usize::TryFrom<T>`
+/// * `k`: `usize` integer that determines how many elements each permutation should have
+/// * `restrict`: `Vec<T>` with the restricted values for each index
 ///
-/// returns: Vec<Vec<T>>
+/// returns: `Vec<Vec<T>>`
 ///
 /// # Examples
 ///
@@ -84,11 +84,11 @@ where
 ///
 /// # Arguments
 ///
-/// * `iterable`: Vec<T> with T having Clone and PartialEq, and usize::TryFrom<T>
-/// * `k`: usize integer that determines how many elements each permutation should have
-/// * `restrict`: HashMap<usize, Vec<T>>, indicating which T elements can not be at which index
+/// * `iterable`: `Vec<T>` with T having Clone and PartialEq, and `usize::TryFrom<T>`
+/// * `k`: `usize` integer that determines how many elements each permutation should have
+/// * `restrict`: `HashMap<usize, Vec<T>>`, indicating which T elements can not be at which index
 ///
-/// returns: Vec<Vec<T>>
+/// returns: `Vec<Vec<T>>`
 ///
 /// # Examples
 ///
@@ -133,11 +133,11 @@ where
 ///
 /// # Arguments
 ///
-/// * `iterable`: Vec<T> with T having Clone and PartialEq, and usize::TryFrom<T>
-/// * `k`: usize integer that determines how many elements each permutation should have
-/// * `restrict`: HashMap<T, Vec<usize>>, indicating at which indices an element T can't be
+/// * `iterable`: `Vec<T>` with T having Clone and PartialEq, and `usize::TryFrom<T>`
+/// * `k`: `usize` integer that determines how many elements each permutation should have
+/// * `restrict`: `HashMap<T, Vec<usize>>`, indicating at which indices an element T can't be
 ///
-/// returns: Vec<Vec<T>>
+/// returns: `Vec<Vec<T>>`
 ///
 /// # Examples
 ///
