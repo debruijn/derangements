@@ -11,7 +11,7 @@ To get started:
   - `derangements_range(n: usize)` will return all derangements of the range `0..n`
 - output of either will be a Vec<Vec<usize>> containing all derangements
 
-## Future plans
+## Future plans (striked through will be in next release)
 Ideally the following would be added or explored:
 - generalize inputs to allow for non-usize inputs (even non-integer)
 - return an iterator instead of a vec
@@ -22,8 +22,8 @@ Ideally the following would be added or explored:
 - add derangement_map variant where you don't restrict the indices but you restrict the elements (same end result)
 - add random_derangement, at least for the default derangement types
 - add examples/use cases of how/when to use this
-- add docstrings
-- speed up derangements_range by caching earlier derangements results
+- ~~add docstrings~~
+- ~~speed up derangements_range by caching earlier derangements results~~
 
 If you have more ideas, let me know!
 

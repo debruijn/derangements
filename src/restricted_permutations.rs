@@ -46,7 +46,7 @@ where
 ///
 /// * `iterable`: Vec<T> with T having Clone and PartialEq, and usize::TryFrom<T>
 /// * `k`: usize integer that determines how many elements each permutation should have
-/// * `restrict`: Vec<T>
+/// * `restrict`: Vec<T> with the restricted values for each index
 ///
 /// returns: Vec<Vec<T>>
 ///
@@ -148,7 +148,6 @@ where
 ///
 /// // Exclude from value 0 from indices 0 and 1, and value 1 from indices 1 and 2.
 /// let restrict = HashMap::from([(0, vec![0, 1]), (1, vec![1, 2])]);
-/// println!("{:?}", restricted_permutations_by_map_value(vec![0, 1, 2, 3], 3, restrict.clone()));
 /// assert_equal(restricted_permutations_by_map_value(vec![0, 1, 2, 3], 3, restrict),
 ///    [[1, 2, 0], [1, 2, 3], [1, 3, 0], [1, 3, 2], [2, 3, 0], [3, 2, 0]]);
 /// ```

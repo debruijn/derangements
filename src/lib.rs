@@ -5,9 +5,16 @@
 //! # Examples
 //!
 //! ```
+//! use std::collections::HashMap;
 //! use itertools::{assert_equal, Itertools};
-//! use derangements::derangements;
+//! use derangements::{derangements, restricted_permutations_by_map_value};
 //! assert_equal(derangements(vec![0, 1, 2].into_iter(), 3), [[1, 2, 0], [2, 0, 1]]);
+//!
+//! // The module also contains other variants of restricted permutations
+//! // Exclude from value 0 from indices 0 and 1, and value 1 from indices 1 and 2.
+//! let restrict = HashMap::from([(0, vec![0, 1]), (1, vec![1, 2])]);
+//! assert_equal(restricted_permutations_by_map_value(vec![0, 1, 2, 3], 3, restrict),
+//!    [[1, 2, 0], [1, 2, 3], [1, 3, 0], [1, 3, 2], [2, 3, 0], [3, 2, 0]]);
 //! ```
 
 mod derangements;
