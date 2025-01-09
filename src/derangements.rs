@@ -1,5 +1,6 @@
 use itertools::Itertools;
 use std::convert::TryFrom;
+use std::hash::Hash;
 
 /// Derange all elements of a range of 0 to n (non-inclusive).
 ///
@@ -199,8 +200,8 @@ where
 pub fn derangements<T, U>(iterable: T, k: usize) -> Vec<Vec<U>>
 where
     T: Iterator<Item = U>,
-    <T as Iterator>::Item: Clone,
-    usize: TryFrom<<T as Iterator>::Item>,
+    U: Clone,
+    usize: TryFrom<U>,
 {
     iterable
         .into_iter()
@@ -243,6 +244,46 @@ where
                 .enumerate()
                 .any(|x| x.0 == usize::try_from(x.1.clone()).unwrap_or(usize::MAX))
         })
+        .collect_vec()
+}
+
+/// Derange k or all elements of an iterable without repetitions.
+///
+/// # Arguments
+///
+/// * `iterable`: Vec<T> containing the iterable of items of type U that have Clone and usize::TryFrom<U>
+/// * `k`: usize integer that determines how many elements each derangement should have
+///
+/// returns: Vec<Vec<U>>
+///
+/// # Examples
+///
+/// ```
+/// use itertools::{assert_equal, Itertools};
+/// use derangements::{derangements, distinct_derangements};
+///
+/// // Deduplicate results when `derangements` does not
+/// assert_equal(derangements(vec![0, 1, 1].into_iter(), 3), [[1, 0, 1], [1, 0, 1]]);
+/// assert_equal(distinct_derangements(vec![0, 1, 1].into_iter(), 3), [[1, 0, 1]]);
+///
+/// // This also works with input k and with values outside range
+/// assert_equal(distinct_derangements(vec![0, 0, -1].into_iter(), 2), [[-1, 0]]);
+/// ```
+pub fn distinct_derangements<T, U>(iterable: T, k: usize) -> Vec<Vec<U>>
+where
+    T: Iterator<Item = U>,
+    U: Clone + Eq + Hash,
+    usize: TryFrom<U>,
+{
+    iterable
+        .into_iter()
+        .permutations(k)
+        .filter(|i| {
+            !i.iter()
+                .enumerate()
+                .any(|x| x.0 == usize::try_from(x.1.clone()).unwrap_or(usize::MAX))
+        })
+        .unique()
         .collect_vec()
 }
 

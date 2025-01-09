@@ -17,3 +17,4 @@ pub use derangements::derangements_box;
 pub use derangements::derangements_range;
 pub use derangements::derangements_range_fast;
 pub use derangements::derangements_vec;
+pub use derangements::distinct_derangements;
