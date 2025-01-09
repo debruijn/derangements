@@ -298,7 +298,7 @@ mod tests {
         for k in 0..8 {
             assert_equal(
                 derangements_range(k).into_iter().sorted(),
-                derangements((0..k), k),
+                derangements(0..k, k),
             );
         }
     }
@@ -324,7 +324,7 @@ mod tests {
             let between = Instant::now();
             _ = derangements_range_fast(k).len();
             let between2 = Instant::now();
-            _ = derangements((0..k), k).len();
+            _ = derangements(0..k, k).len();
             let after = Instant::now();
             _ = derangements_box::<usize>(Box::from(0..k), k).len();
             let after2 = Instant::now();
