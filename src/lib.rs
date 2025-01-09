@@ -20,4 +20,7 @@ pub use derangements::derangements_range_fast;
 pub use derangements::derangements_vec;
 pub use derangements::distinct_derangements;
 
+pub use restricted_permutations::restricted_permutations_by_map_index;
+pub use restricted_permutations::restricted_permutations_by_map_value;
 pub use restricted_permutations::restricted_permutations_by_self;
+pub use restricted_permutations::restricted_permutations_by_vec;
