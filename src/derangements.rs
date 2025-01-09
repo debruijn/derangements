@@ -142,10 +142,10 @@ pub fn derangements_range_fast(n: usize) -> Vec<Vec<usize>> {
 ///
 /// # Arguments
 ///
-/// * `iterable`: Vec<usize> containing the iterable
+/// * `iterable`: Vec<T> with type T having Clone and usize::TryFrom<T>
 /// * `k`: usize integer that determines how many elements each derangement should have
 ///
-/// returns: Vec<Vec<usize>>
+/// returns: Vec<Vec<T>>
 ///
 /// # Examples
 ///
@@ -175,10 +175,10 @@ where
 ///
 /// # Arguments
 ///
-/// * `iterable`: Vec<usize> containing the iterable
+/// * `iterable`: Vec<T> containing the iterable of items of type U that have Clone and usize::TryFrom<U>
 /// * `k`: usize integer that determines how many elements each derangement should have
 ///
-/// returns: Vec<Vec<usize>>
+/// returns: Vec<Vec<U>>
 ///
 /// # Examples
 ///
@@ -213,6 +213,23 @@ where
         .collect_vec()
 }
 
+/// Derange k or all elements of a Boxed iterable.
+///
+/// # Arguments
+///
+/// * `iterable`: Box<dyn Iterator<Item = T>> with T having Clone and usize::TryFrom<T>
+/// * `k`: usize integer that determines how many elements each derangement should have
+///
+/// returns: Vec<Vec<T>>
+///
+/// # Examples
+///
+/// ```
+/// use itertools::{assert_equal, Itertools};
+/// use derangements::derangements_box;
+/// assert_equal(derangements_box::<usize>(Box::from(0..3), 3), [[1, 2, 0], [2, 0, 1]]);
+///
+/// ```
 pub fn derangements_box<T>(iterable: Box<dyn Iterator<Item = T>>, k: usize) -> Vec<Vec<T>>
 where
     T: Clone,
