@@ -11,15 +11,20 @@ To get started:
   - `derangements_range(n: usize)` will return all derangements of the range `0..n`
 - output of either will be a Vec<Vec<usize>> containing all derangements
 
+For more options, including more derangement variants and also other restricted permutations, see
+https://docs.rs/derangements
+
 ## Future plans (striked through will be in next release)
 Ideally the following would be added or explored:
-- generalize inputs to allow for non-usize inputs (even non-integer)
+- generalize inputs to allow for non-usize inputs (even non-integer) -> partially now done, can be negative
+  - note: if this is needed for generating a k-length derangement, you can always map the non-integers to values
+    outside 0..k and then map them back afterwards
 - return an iterator instead of a vec
-- add dinstict_derangements
-- add derangement_vec (second input indicates which element can't be placed on that spot - might need a new name)
-- add derangement_self (the above but with first input having both roles)
-- add derangement_map (the above but with multiple restrictions per index)
-- add derangement_map variant where you don't restrict the indices but you restrict the elements (same end result)
+- ~~add dinstict_derangements~~
+- ~~add derangement_vec (second input indicates which element can't be placed on that spot - might need a new name)~~
+- ~~add derangement_self (the above but with first input having both roles)~~
+- ~~add derangement_map (the above but with multiple restrictions per index)~~
+- ~~add derangement_map variant where you don't restrict the indices but you restrict the elements (same end result)~~
 - add random_derangement, at least for the default derangement types
 - add examples/use cases of how/when to use this
 - ~~add docstrings~~
