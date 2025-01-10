@@ -1,6 +1,5 @@
 use itertools::Itertools;
 use std::collections::HashMap;
-use std::convert::TryFrom;
 use std::hash::Hash;
 
 /// Permute k or all elements of an integer Vec while excluding any results where one of the
@@ -8,7 +7,7 @@ use std::hash::Hash;
 ///
 /// # Arguments
 ///
-/// * `iterable`: `Vec<T>` with T having Clone and PartialEq, and `usize::TryFrom<T>`
+/// * `iterable`: `Vec<T>` with T having Clone and PartialEq
 /// * `k`: `usize` integer that determines how many elements each permutation should have
 ///
 /// returns: `Vec<Vec<T>>`
@@ -26,11 +25,14 @@ use std::hash::Hash;
 /// // In case the input is already range-like, the output is the same
 /// assert_equal(derangements_vec(vec![0, 1, 2], 3),
 ///     restricted_permutations_by_self(vec![0, 1, 2], 3));
+///
+/// // This can also be applied to a non-integer type in the vector
+/// assert_equal(restricted_permutations_by_self(vec!["I", "like", "permutations"], 3),
+///     [["like", "permutations", "I"], ["permutations", "I", "like"]])
 /// ```
 pub fn restricted_permutations_by_self<T>(iterable: Vec<T>, k: usize) -> Vec<Vec<T>>
 where
     T: Clone + PartialEq,
-    usize: TryFrom<T>,
 {
     iterable
         .clone()
@@ -44,7 +46,7 @@ where
 ///
 /// # Arguments
 ///
-/// * `iterable`: `Vec<T>` with T having Clone and PartialEq, and `usize::TryFrom<T>`
+/// * `iterable`: `Vec<T>` with T having Clone and PartialEq
 /// * `k`: `usize` integer that determines how many elements each permutation should have
 /// * `restrict`: `Vec<T>` with the restricted values for each index
 ///
@@ -63,6 +65,10 @@ where
 /// // Otherwise, the result will be different depending on the restrict input
 /// assert_equal(restricted_permutations_by_vec(vec![1, 0, 2, 2], 3, vec![1, 0, 2]),
 ///     [[0, 2, 1], [0, 2, 1], [2, 1, 0], [2, 2, 1], [2, 2, 0], [2, 1, 0], [2, 2, 1], [2, 2, 0]]);
+///
+/// // This can also be applied to a non-integer type in the vector
+/// assert_equal(restricted_permutations_by_vec(vec!["I", "like", "permutations"], 2, vec!["like", "I"]),
+///     [["I", "like"], ["I", "permutations"], ["permutations", "like"]])
 /// ```
 pub fn restricted_permutations_by_vec<T>(
     iterable: Vec<T>,
@@ -71,7 +77,6 @@ pub fn restricted_permutations_by_vec<T>(
 ) -> Vec<Vec<T>>
 where
     T: Clone + PartialEq,
-    usize: TryFrom<T>,
 {
     iterable
         .into_iter()
@@ -84,7 +89,7 @@ where
 ///
 /// # Arguments
 ///
-/// * `iterable`: `Vec<T>` with T having Clone and PartialEq, and `usize::TryFrom<T>`
+/// * `iterable`: `Vec<T>` with T having Clone and PartialEq
 /// * `k`: `usize` integer that determines how many elements each permutation should have
 /// * `restrict`: `HashMap<usize, Vec<T>>`, indicating which T elements can not be at which index
 ///
@@ -112,7 +117,6 @@ pub fn restricted_permutations_by_map_index<T>(
 ) -> Vec<Vec<T>>
 where
     T: Clone + PartialEq,
-    usize: TryFrom<T>,
 {
     iterable
         .into_iter()
@@ -133,7 +137,7 @@ where
 ///
 /// # Arguments
 ///
-/// * `iterable`: `Vec<T>` with T having Clone and PartialEq, and `usize::TryFrom<T>`
+/// * `iterable`: `Vec<T>` with T having Clone and PartialEq
 /// * `k`: `usize` integer that determines how many elements each permutation should have
 /// * `restrict`: `HashMap<T, Vec<usize>>`, indicating at which indices an element T can't be
 ///
@@ -161,7 +165,6 @@ pub fn restricted_permutations_by_map_value<T>(
 ) -> Vec<Vec<T>>
 where
     T: Clone + PartialEq + Hash + Eq,
-    usize: TryFrom<T>,
 {
     iterable
         .into_iter()
