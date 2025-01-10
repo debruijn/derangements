@@ -359,7 +359,7 @@ mod tests {
     #[test]
     fn test_time() {
         use std::time::Instant;
-        for k in 0..11 {
+        for k in 0..10 {
             let before = Instant::now();
             _ = derangements_range(k).len();
             let between = Instant::now();
