@@ -18,6 +18,7 @@
 //! ```
 
 mod derangements;
+mod derangements_iter;
 mod restricted_permutations;
 
 pub use derangements::derangements;
@@ -31,3 +32,5 @@ pub use restricted_permutations::restricted_permutations_by_map_index;
 pub use restricted_permutations::restricted_permutations_by_map_value;
 pub use restricted_permutations::restricted_permutations_by_self;
 pub use restricted_permutations::restricted_permutations_by_vec;
+
+pub use derangements_iter::derangements_iter;
