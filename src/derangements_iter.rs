@@ -88,16 +88,16 @@ where
 }
 
 #[derive(Debug, Clone)]
-pub struct DistinctDerangements<I> {
-    buffer: Vec<I>,
+pub struct DistinctDerangements<I: Iterator> {
+    buffer: Vec<I::Item>,
     start: bool,
     index: usize,
 }
 
-pub fn distinct_derangements<I>(iter: I) -> DistinctDerangements<I::Item>
+pub fn distinct_derangements<I>(iter: I) -> DistinctDerangements<I>
 where
     I: Iterator,
-    I::Item: Ord,
+    I::Item: Ord + Clone,
 {
     let mut buffer = Vec::from_iter(iter);
     buffer.sort_unstable_by(|a, b| b.cmp(a));
@@ -109,12 +109,13 @@ where
     }
 }
 
-impl<I: Copy> Iterator for DistinctDerangements<I>
+impl<I> Iterator for DistinctDerangements<I>
 where
-    I: Ord,
-    usize: From<I>,
+    I: Iterator,
+    I::Item: Ord + Copy + Clone,
+    usize: From<I::Item>,
 {
-    type Item = Vec<I>;
+    type Item = Vec<I::Item>;
 
     fn next(&mut self) -> Option<Self::Item> {
         // Start iteration with buffer itself
@@ -124,7 +125,7 @@ where
                 .buffer
                 .iter()
                 .enumerate()
-                .any(|x| x.0 == <I as Into<usize>>::into(*x.1))
+                .any(|x| x.0 == <I::Item as Into<usize>>::into(*x.1))
             {
                 return Some(self.buffer.clone());
             }
@@ -166,7 +167,7 @@ where
             .buffer
             .iter()
             .enumerate()
-            .any(|x| x.0 == <I as Into<usize>>::into(*x.1))
+            .any(|x| x.0 == <I::Item as Into<usize>>::into(*x.1))
         {
             Some(self.buffer.clone())
         } else {
@@ -176,32 +177,33 @@ where
 }
 
 #[derive(Debug, Clone)]
-pub struct MultisetPermutations<I> {
-    buffer: Vec<I>,
+pub struct DistinctPermutations<I: Iterator> {
+    buffer: Vec<I::Item>,
     start: bool,
     index: usize,
 }
 
-pub fn multiset_permutations<I>(iter: I) -> MultisetPermutations<I::Item>
+pub fn distinct_permutations<I>(iter: I) -> DistinctPermutations<I>
 where
     I: Iterator,
-    I::Item: Ord,
+    I::Item: Ord + Clone,
 {
     let mut buffer = Vec::from_iter(iter);
     buffer.sort_unstable_by(|a, b| b.cmp(a));
     let length = buffer.len();
-    MultisetPermutations {
+    DistinctPermutations {
         buffer,
         start: true,
         index: length.saturating_sub(2),
     }
 }
 
-impl<I: Copy> Iterator for MultisetPermutations<I>
+impl<I> Iterator for DistinctPermutations<I>
 where
-    I: Ord,
+    I: Iterator,
+    I::Item: Ord + Copy + Clone,
 {
-    type Item = Vec<I>;
+    type Item = Vec<I::Item>;
 
     fn next(&mut self) -> Option<Self::Item> {
         // Start iteration with buffer itself
@@ -252,6 +254,7 @@ mod tests {
     use super::*;
     use crate::{derangements, derangements_range, derangements_range_fast};
     use itertools::assert_equal;
+    use std::time::Instant;
 
     #[test]
     fn derangements_manual() {
@@ -263,11 +266,33 @@ mod tests {
             derangements_iter([0, 0, 1].into_iter(), 3),
             vec![[1, 0, 0], [1, 0, 0]],
         );
-        for k in 8..10 {
-            println!("{:?}", (0..k).permutations(k).collect_vec().len());
-            println!("{:?}", multiset_permutations(0..k).collect_vec().len());
-            println!("{:?}", distinct_derangements(0..k).collect_vec().len());
-            println!("{:?}", derangements_iter(0..k, k).collect_vec().len());
+        for k in 5..11 {
+            // println!("{:?}", (0..k).permutations(k).collect_vec().len());
+            // println!("{:?}", multiset_permutations(0..k).collect_vec().len());
+            // println!("{:?}", distinct_derangements(0..k).collect_vec().len());
+            // println!("{:?}", derangements_iter(0..k, k).collect_vec().len());
+
+            let before = Instant::now();
+            _ = (0..k).permutations(k).collect_vec().len();
+            let between = Instant::now();
+            _ = distinct_permutations(0..k).collect_vec().len();
+            let between2 = Instant::now();
+            _ = distinct_derangements(0..k).collect_vec().len();
+            let after = Instant::now();
+            _ = derangements_iter(0..k, k).collect_vec().len();
+            let after2 = Instant::now();
+
+            println!(
+                "{:?}, default perm {:?}, multiset perm {:?}, multiset derang {:?}, derang iter: {:?}; multiset ratio: {:?}, default ratio: {:?}",
+                k,
+                between - before,
+                between2 - between,
+                after - between2,
+                after2 - after,
+                (after - between2).as_secs_f64() / (between2 - between).as_secs_f64(),
+                (after2 - after).as_secs_f64() / (between - before).as_secs_f64(),
+
+            )
         }
     }
 

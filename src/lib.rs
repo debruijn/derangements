@@ -35,4 +35,4 @@ pub use restricted_permutations::restricted_permutations_by_vec;
 
 pub use derangements_iter::derangements_iter;
 pub use derangements_iter::distinct_derangements as distinct_derangements_iter;
-pub use derangements_iter::multiset_permutations;
+pub use derangements_iter::distinct_permutations;
