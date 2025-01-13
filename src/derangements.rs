@@ -260,16 +260,16 @@ where
 ///
 /// ```
 /// use itertools::{assert_equal, Itertools};
-/// use derangements::{derangements, distinct_derangements};
+/// use derangements::{derangements, distinct_derangements_vec};
 ///
 /// // Deduplicate results when `derangements` does not
 /// assert_equal(derangements(vec![0, 1, 1].into_iter(), 3), [[1, 0, 1], [1, 0, 1]]);
-/// assert_equal(distinct_derangements(vec![0, 1, 1].into_iter(), 3), [[1, 0, 1]]);
+/// assert_equal(distinct_derangements_vec(vec![0, 1, 1].into_iter(), 3), [[1, 0, 1]]);
 ///
 /// // This also works with input k and with values outside range
-/// assert_equal(distinct_derangements(vec![0, 0, -1].into_iter(), 2), [[-1, 0]]);
+/// assert_equal(distinct_derangements_vec(vec![0, 0, -1].into_iter(), 2), [[-1, 0]]);
 /// ```
-pub fn distinct_derangements<T, U>(iterable: T, k: usize) -> Vec<Vec<U>>
+pub fn distinct_derangements_vec<T, U>(iterable: T, k: usize) -> Vec<Vec<U>>
 where
     T: Iterator<Item = U>,
     U: Clone + Eq + Hash,
