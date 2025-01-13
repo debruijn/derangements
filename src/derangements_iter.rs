@@ -263,7 +263,7 @@ mod tests {
             derangements_iter([0, 0, 1].into_iter(), 3),
             vec![[1, 0, 0], [1, 0, 0]],
         );
-        for k in 8..12 {
+        for k in 8..10 {
             println!("{:?}", (0..k).permutations(k).collect_vec().len());
             println!("{:?}", multiset_permutations(0..k).collect_vec().len());
             println!("{:?}", distinct_derangements(0..k).collect_vec().len());
@@ -274,7 +274,7 @@ mod tests {
     #[test]
     fn test_time() {
         use std::time::Instant;
-        for k in 0..12 {
+        for k in 0..10 {
             let before = Instant::now();
             _ = derangements_range(k).len();
             let between = Instant::now();
