@@ -24,6 +24,7 @@ macro_rules! debug_fmt_fields {  // Note: copied from Itertools - need to attrib
     }
 }
 
+#[must_use = "iterator adaptors are lazy and do nothing unless consumed"]
 pub struct Derangements<I: Iterator> {
     permutations: Permutations<I>,
     // restrictions: Vec<I>
@@ -45,9 +46,10 @@ where
     debug_fmt_fields!(Derangements, permutations);
 }
 
-pub fn derangements_iter<I: Iterator>(iter: I, k: usize) -> Derangements<I>
+pub fn derangements_iter<I>(iter: I, k: usize) -> Derangements<I>
 where
-    <I as Iterator>::Item: Clone,
+    I: Iterator,
+    I::Item: Clone,
 {
     Derangements {
         permutations: Itertools::permutations(iter, k),
@@ -63,19 +65,18 @@ where
 
     fn next(&mut self) -> Option<Self::Item> {
         match self.permutations.next() {
-            None => None,
+            None => return None,
             Some(x) => {
                 if !x
                     .iter()
                     .enumerate()
                     .any(|x| x.0 == x.1.clone().try_into().unwrap_or(usize::MAX))
                 {
-                    Some(x)
-                } else {
-                    self.next()
+                    return Some(x);
                 }
             }
-        }
+        };
+        self.next()
     }
 }
 
@@ -86,9 +87,170 @@ where
 {
 }
 
+#[derive(Debug, Clone)]
+pub struct DistinctDerangements<I> {
+    buffer: Vec<I>,
+    start: bool,
+    index: usize,
+}
+
+pub fn distinct_derangements<I>(iter: I) -> DistinctDerangements<I::Item>
+where
+    I: Iterator,
+    I::Item: Ord,
+{
+    let mut buffer = Vec::from_iter(iter);
+    buffer.sort_unstable_by(|a, b| b.cmp(a));
+    let length = buffer.len();
+    DistinctDerangements {
+        buffer,
+        start: true,
+        index: length.saturating_sub(2),
+    }
+}
+
+impl<I: Copy> Iterator for DistinctDerangements<I>
+where
+    I: Ord,
+    usize: From<I>,
+{
+    type Item = Vec<I>;
+
+    fn next(&mut self) -> Option<Self::Item> {
+        // Start iteration with buffer itself
+        if self.start {
+            self.start = false;
+            if !self
+                .buffer
+                .iter()
+                .enumerate()
+                .any(|x| x.0 == <I as Into<usize>>::into(*x.1))
+            {
+                return Some(self.buffer.clone());
+            }
+        }
+
+        // Exhausted iteration
+        let has_two_next = self.index + 2 < self.buffer.len();
+        if !has_two_next
+            && (self.buffer.len() <= self.index + 1
+                || self.buffer[0] <= self.buffer[self.index + 1])
+        {
+            return None;
+        }
+
+        // Determine shift index
+        let shift_index = if has_two_next && self.buffer[self.index + 2] <= self.buffer[self.index]
+        {
+            self.index + 2
+        } else {
+            self.index + 1
+        };
+
+        // Prefix shift
+        let shift_elem = self.buffer[shift_index];
+        let mut swap_index = shift_index;
+        while swap_index > 0 {
+            self.buffer[swap_index] = self.buffer[swap_index - 1];
+            swap_index -= 1;
+        }
+        self.buffer[0] = shift_elem;
+
+        // Update index
+        if self.buffer[0] < self.buffer[1] {
+            self.index = 0;
+        } else {
+            self.index += 1;
+        }
+        if !self
+            .buffer
+            .iter()
+            .enumerate()
+            .any(|x| x.0 == <I as Into<usize>>::into(*x.1))
+        {
+            Some(self.buffer.clone())
+        } else {
+            self.next()
+        }
+    }
+}
+
+#[derive(Debug, Clone)]
+pub struct MultisetPermutations<I> {
+    buffer: Vec<I>,
+    start: bool,
+    index: usize,
+}
+
+pub fn multiset_permutations<I>(iter: I) -> MultisetPermutations<I::Item>
+where
+    I: Iterator,
+    I::Item: Ord,
+{
+    let mut buffer = Vec::from_iter(iter);
+    buffer.sort_unstable_by(|a, b| b.cmp(a));
+    let length = buffer.len();
+    MultisetPermutations {
+        buffer,
+        start: true,
+        index: length.saturating_sub(2),
+    }
+}
+
+impl<I: Copy> Iterator for MultisetPermutations<I>
+where
+    I: Ord,
+{
+    type Item = Vec<I>;
+
+    fn next(&mut self) -> Option<Self::Item> {
+        // Start iteration with buffer itself
+        if self.start {
+            self.start = false;
+            return Some(self.buffer.clone());
+        }
+
+        // Exhausted iteration
+        let has_two_next = self.index + 2 < self.buffer.len();
+        if !has_two_next
+            && (self.buffer.len() <= self.index + 1
+                || self.buffer[0] <= self.buffer[self.index + 1])
+        {
+            return None;
+        }
+
+        // Determine shift index
+        let shift_index = if has_two_next && self.buffer[self.index + 2] <= self.buffer[self.index]
+        {
+            self.index + 2
+        } else {
+            self.index + 1
+        };
+
+        // Prefix shift
+        let shift_elem = self.buffer[shift_index];
+        let mut swap_index = shift_index;
+        while swap_index > 0 {
+            self.buffer[swap_index] = self.buffer[swap_index - 1];
+            swap_index -= 1;
+        }
+        self.buffer[0] = shift_elem;
+
+        // Update index
+        if self.buffer[0] < self.buffer[1] {
+            self.index = 0;
+        } else {
+            self.index += 1;
+        }
+
+        Some(self.buffer.clone())
+    }
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
+    use crate::{derangements, derangements_range, derangements_range_fast};
     use itertools::assert_equal;
 
     #[test]
@@ -101,5 +263,38 @@ mod tests {
             derangements_iter([0, 0, 1].into_iter(), 3),
             vec![[1, 0, 0], [1, 0, 0]],
         );
+        for k in 8..12 {
+            println!("{:?}", (0..k).permutations(k).collect_vec().len());
+            println!("{:?}", multiset_permutations(0..k).collect_vec().len());
+            println!("{:?}", distinct_derangements(0..k).collect_vec().len());
+            println!("{:?}", derangements_iter(0..k, k).collect_vec().len());
+        }
+    }
+
+    #[test]
+    fn test_time() {
+        use std::time::Instant;
+        for k in 0..12 {
+            let before = Instant::now();
+            _ = derangements_range(k).len();
+            let between = Instant::now();
+            _ = derangements_range_fast(k).len();
+            let between2 = Instant::now();
+            _ = derangements(0..k, k).len();
+            let after = Instant::now();
+            _ = derangements_iter(0..k, k).collect_vec().len();
+            let after2 = Instant::now();
+            _ = distinct_derangements(0..k).collect_vec().len();
+            let after3 = Instant::now();
+            println!(
+                "{:?}, range old {:?}, range new {:?}, non-range {:?}, iter: {:?}, distinct_iter: {:?}",
+                k,
+                between - before,
+                between2 - between,
+                after - between2,
+                after2 - after,
+                after3 - after2
+            )
+        }
     }
 }
