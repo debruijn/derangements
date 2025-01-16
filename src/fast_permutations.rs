@@ -167,5 +167,11 @@ mod tests {
             "{:?}",
             fast_permutations([1, 1, 2, 3].into_iter(), 4).collect_vec()
         );
+
+        println!("{:?}", distinct_permutations(0..4).collect_vec());
+        println!(
+            "{:?}",
+            distinct_permutations([1, 1, 2, 3].into_iter()).collect_vec()
+        );
     }
 }
