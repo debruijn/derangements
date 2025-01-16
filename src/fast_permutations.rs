@@ -161,7 +161,7 @@ mod tests {
     use itertools::Itertools;
 
     #[test]
-    fn derangements_manual() {
+    fn fast_permutations_manual() {
         println!("{:?}", fast_permutations(0..4, 4).collect_vec());
         println!(
             "{:?}",
