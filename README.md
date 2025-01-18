@@ -19,7 +19,7 @@ Ideally the following would be added or explored:
 - generalize inputs to allow for non-usize inputs (even non-integer) -> partially now done, can be negative
   - note: if this is needed for generating a k-length derangement, you can always map the non-integers to values
     outside 0..k and then map them back afterwards
-- return an iterator instead of a vec
+- ~~return an iterator instead of a vec~~
 - ~~add dinstict_derangements~~
 - ~~add derangement_vec (second input indicates which element can't be placed on that spot - might need a new name)~~
 - ~~add derangement_self (the above but with first input having both roles)~~
@@ -29,6 +29,14 @@ Ideally the following would be added or explored:
 - add examples/use cases of how/when to use this
 - ~~add docstrings~~
 - ~~speed up derangements_range by caching earlier derangements results~~
+- Fix tests:
+  - move old Vec tests to iter based implementation
+  - keep range tests for now
+  - add more tests for restricted permutations
+  - add more tests for fast permutations
+  - update test in lib.rs for default usage
+- Explore creating an iterable for a faster derangement_range as well (if that is faster) - or otherwise just remove
+- Consider introducing `derangements_by_value` here as well to keep naming consistent with Python's `more_itertools`
 
 If you have more ideas, let me know!
 
