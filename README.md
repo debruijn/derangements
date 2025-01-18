@@ -37,6 +37,9 @@ Ideally the following would be added or explored:
   - update test in lib.rs for default usage
 - Explore creating an iterable for a faster derangement_range as well (if that is faster) - or otherwise just remove
 - Consider introducing `derangements_by_value` here as well to keep naming consistent with Python's `more_itertools`
+- Investigate alternative method to speed up when we don't want to drop duplicates
+  - Intuitively, it should be faster to not account for it, with the right algorithm
+  - Alternative, we could "repeat" items that need to be duplicated by calculating a "duplication" metric
 
 If you have more ideas, let me know!
 
