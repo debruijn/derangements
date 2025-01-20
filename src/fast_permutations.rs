@@ -158,20 +158,72 @@ where
 #[cfg(test)]
 mod tests {
     use super::*;
-    use itertools::Itertools;
+    use itertools::{assert_equal, Itertools};
 
     #[test]
-    fn fast_permutations_manual() {
-        println!("{:?}", fast_permutations(0..4, 4).collect_vec());
-        println!(
-            "{:?}",
-            fast_permutations([1, 1, 2, 3].into_iter(), 4).collect_vec()
-        );
+    fn test_permutations_range() {
+        for k in 0..8 {
+            assert_equal(
+                fast_permutations(0..k, k).sorted(),
+                Itertools::permutations(0..k, k).sorted(),
+            );
+        }
+    }
 
-        println!("{:?}", distinct_permutations(0..4).collect_vec());
-        println!(
-            "{:?}",
-            distinct_permutations([1, 1, 2, 3].into_iter()).collect_vec()
+    #[test]
+    fn test_permutations_manual() {
+        assert_equal(
+            fast_permutations(vec![0usize, 2].into_iter(), 2),
+            [[0, 2], [2, 0]],
+        );
+        assert_equal(
+            fast_permutations(vec![0u8, 1, 3].into_iter(), 3),
+            [
+                [0, 1, 3],
+                [3, 0, 1],
+                [0, 3, 1],
+                [1, 0, 3],
+                [3, 1, 0],
+                [1, 3, 0],
+            ],
+        );
+        assert_equal(
+            fast_permutations(vec![0usize, 1, 3].into_iter(), 2),
+            [[0, 1], [3, 0], [0, 3], [1, 0], [3, 1], [1, 3]],
+        );
+        assert_equal(
+            fast_permutations(vec![0u16, 1, 1].into_iter(), 3),
+            [
+                [0, 1, 1],
+                [1, 0, 1],
+                [0, 1, 1],
+                [1, 0, 1],
+                [1, 1, 0],
+                [1, 1, 0],
+            ],
+        );
+        assert_equal(
+            fast_permutations(vec![0usize, 1, 1].into_iter(), 2),
+            [[0, 1], [1, 0], [0, 1], [1, 0], [1, 1], [1, 1]],
+        );
+    }
+
+    #[test]
+    fn test_distinct_permutations() {
+        assert_equal(
+            distinct_permutations(vec![0u8, 1, 3].into_iter()),
+            [
+                [3, 1, 0],
+                [0, 3, 1],
+                [3, 0, 1],
+                [1, 3, 0],
+                [0, 1, 3],
+                [1, 0, 3],
+            ],
+        );
+        assert_equal(
+            distinct_permutations(vec![0u16, 1, 1].into_iter()),
+            [[1, 1, 0], [0, 1, 1], [1, 0, 1]],
         );
     }
 }
