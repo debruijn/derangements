@@ -7,8 +7,8 @@
 //! ```
 //! use std::collections::HashMap;
 //! use itertools::{assert_equal, Itertools};
-//! use derangements::{derangements_old, restricted_permutations_by_map_value};
-//! assert_equal(derangements_old(vec![0, 1, 2].into_iter(), 3), [[1, 2, 0], [2, 0, 1]]);
+//! use derangements::{derangements, restricted_permutations_by_map_value};
+//! assert_equal(derangements(vec![0usize, 1, 2].into_iter(), 3).sorted(), [[1, 2, 0], [2, 0, 1]]);
 //!
 //! // The module also contains other variants of restricted permutations
 //! // Exclude from value 0 from indices 0 and 1, and value 1 from indices 1 and 2.
@@ -18,16 +18,12 @@
 //! ```
 
 mod derangements;
-mod derangements_vec;
+mod derangements_range;
 mod fast_permutations;
 mod restricted_permutations;
 
-pub use derangements_vec::derangements_box;
-pub use derangements_vec::derangements_old;
-pub use derangements_vec::derangements_range;
-pub use derangements_vec::derangements_range_fast;
-pub use derangements_vec::derangements_vec;
-pub use derangements_vec::distinct_derangements_vec;
+pub use derangements_range::derangements_range;
+pub use derangements_range::derangements_range_fast;
 
 pub use restricted_permutations::restricted_permutations_by_map_index;
 pub use restricted_permutations::restricted_permutations_by_map_value;

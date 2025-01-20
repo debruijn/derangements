@@ -16,14 +16,14 @@ use std::hash::Hash;
 ///
 /// ```
 /// use itertools::{assert_equal, Itertools};
-/// use derangements::{derangements_vec, restricted_permutations_by_self};
+/// use derangements::{derangements, restricted_permutations_by_self};
 ///
 /// // Compare the differences between derangements and this function
-/// assert_equal(derangements_vec(vec![1, 0, 2], 3), [[1, 2, 0], [2, 0, 1]]);
+/// assert_equal(derangements(vec![1usize, 0, 2].into_iter(), 3).sorted(), [[1, 2, 0], [2, 0, 1]]);
 /// assert_equal(restricted_permutations_by_self(vec![1, 0, 2], 3), [[0, 2, 1], [2, 1, 0]]);
 ///
 /// // In case the input is already range-like, the output is the same
-/// assert_equal(derangements_vec(vec![0, 1, 2], 3),
+/// assert_equal(derangements(vec![0usize, 1, 2].into_iter(), 3).sorted(),
 ///     restricted_permutations_by_self(vec![0, 1, 2], 3));
 ///
 /// // This can also be applied to a non-integer type in the vector
