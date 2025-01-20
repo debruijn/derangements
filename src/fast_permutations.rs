@@ -28,6 +28,16 @@ where
     }
 }
 
+impl<I> FastPermutations<I>
+where
+    I: Iterator,
+    I::Item: Clone,
+{
+    pub fn get_values(&self) -> Vec<I::Item> {
+        self.values.clone()
+    }
+}
+
 impl<I> Iterator for FastPermutations<I>
 where
     I: Iterator,
