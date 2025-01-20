@@ -50,15 +50,15 @@ where
     debug_fmt_fields!(RestrictedPermutations, permutations, restrict);
 }
 
-/// Permute k or all elements of an integer Vec while excluding based on an input restriction
+/// Permute k or all elements of an iterable while excluding based on an input restriction
 ///
 /// # Arguments
 ///
-/// * `iterable`: `Vec<T>` with T having Clone and PartialEq
+/// * `iterable`: the iterable of items to permute
 /// * `k`: `usize` integer that determines how many elements each permutation should have
-/// * `restrict`: `Vec<T>` with the restricted values for each index
+/// * `restrict`: the iterable of items to use as restriction
 ///
-/// returns: `Vec<Vec<T>>`
+/// returns:  iterable with the permutations
 ///
 /// # Examples
 ///
@@ -89,15 +89,15 @@ where
     }
 }
 
-/// Permute k or all elements of an integer Vec while excluding any results where one of the
+/// Permute k or all elements of an iterable while excluding any results where one of the
 /// elements doesn't change.
 ///
 /// # Arguments
 ///
-/// * `iterable`: `Vec<T>` with T having Clone and PartialEq
+/// * `iterable`: the iterable of items to permute
 /// * `k`: `usize` integer that determines how many elements each permutation should have
 ///
-/// returns: `Vec<Vec<T>>`
+/// returns: iterable with the permutations
 ///
 /// # Examples
 ///
@@ -179,15 +179,15 @@ where
     debug_fmt_fields!(RestrictedPermutationsByMapIndex, permutations, restrict);
 }
 
-/// Permute k or all elements of an integer Vec while excluding based on an input restriction
+/// Permute k or all elements of an iterable while excluding based on an input restriction
 ///
 /// # Arguments
 ///
-/// * `iterable`: `Vec<T>` with T having Clone and PartialEq
+/// * `iterable`: the iterable of items to permute
 /// * `k`: `usize` integer that determines how many elements each permutation should have
-/// * `restrict`: `HashMap<usize, Vec<T>>`, indicating which T elements can not be at which index
+/// * `restrict`: `HashMap<usize, Vec<I::Item>>`, indicating which elements can not be at an index
 ///
-/// returns: `Vec<Vec<T>>`
+/// returns: iterable with the permutations
 ///
 /// # Examples
 ///
@@ -274,15 +274,15 @@ where
     debug_fmt_fields!(RestrictedPermutationsByMapValue, permutations, restrict);
 }
 
-/// Permute k or all elements of an integer Vec while excluding based on an input restriction
+/// Permute k or all elements of an iterable while excluding based on an input restriction
 ///
 /// # Arguments
 ///
-/// * `iterable`: `Vec<T>` with T having Clone and PartialEq
+/// * `iterable`: the iterable of items to permute
 /// * `k`: `usize` integer that determines how many elements each permutation should have
-/// * `restrict`: `HashMap<T, Vec<usize>>`, indicating at which indices an element T can't be
+/// * `restrict`: `HashMap<I::Item, Vec<usize>>`, indicating at which indices an element can't be
 ///
-/// returns: `Vec<Vec<T>>`
+/// returns: iterable with the permutations
 ///
 /// # Examples
 ///
