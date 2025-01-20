@@ -5,7 +5,7 @@ use std::iter::FusedIterator;
 
 macro_rules! clone_fields {  // Note: copied from Itertools - need to attribute before release - or just directly write the clone func
     ($($field:ident),*) => {
-        #[inline] // TODO is this sensible?
+        #[inline]
         fn clone(&self) -> Self {
             Self {
                 $($field: self.$field.clone(),)*
@@ -14,7 +14,7 @@ macro_rules! clone_fields {  // Note: copied from Itertools - need to attribute 
     }
 }
 macro_rules! debug_fmt_fields {  // Note: copied from Itertools - need to attribute before release - or just directly write the fmt func
-    ($tyname:ident, $($($field:tt/*TODO ideally we would accept ident or tuple element here*/).+),*) => {
+    ($tyname:ident, $($($field:tt).+),*) => {
         fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
             f.debug_struct(stringify!($tyname))
                 $(
