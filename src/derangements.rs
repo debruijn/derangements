@@ -28,7 +28,6 @@ macro_rules! debug_fmt_fields {  // Note: copied from Itertools - need to attrib
 #[must_use = "iterator adaptors are lazy and do nothing unless consumed"]
 pub struct Derangements<I: Iterator> {
     permutations: FastPermutations<I>,
-    // restrictions: Vec<I>
 }
 
 impl<I> Clone for Derangements<I>
@@ -182,85 +181,77 @@ where
 #[cfg(test)]
 mod tests {
     use super::*;
-    use crate::{
-        derangements_old, derangements_range, derangements_range_fast, derangements_vec,
-        distinct_permutations,
-    };
+    use crate::derangements_range;
     use itertools::{assert_equal, Itertools};
-    use std::time::Instant;
 
     #[test]
-    fn derangements_manual() {
-        assert_equal(derangements(0..1, 1), Vec::<Vec<usize>>::new());
-        assert_equal(derangements(0..2, 2), vec![[1usize, 0]]);
-        assert_equal(
-            derangements(0..3, 3).sorted(),
-            vec![[1usize, 2, 0], [2, 0, 1]],
-        );
-        assert_equal(
-            derangements(0..3, 2).sorted(),
-            vec![[1usize, 0], [1, 2], [2, 0]],
-        );
-        // assert_equal(
-        //     derangements_iter([0, 0, 1].into_iter(), 3),
-        //     vec![[1, 0, 0], [1, 0, 0]],
-        // );  // TODO: fix for fast_permutations
-        for k in 5..11 {
-            // println!("{:?}", (0..k).permutations(k).collect_vec().len());
-            // println!("{:?}", multiset_permutations(0..k).collect_vec().len());
-            // println!("{:?}", distinct_derangements(0..k).collect_vec().len());
-            // println!("{:?}", derangements_iter(0..k, k).collect_vec().len());
-
-            let before_true = Instant::now();
-            _ = (0..k).permutations(k).collect_vec().len();
-            let before = Instant::now();
-            _ = fast_permutations(0..k, k).collect_vec().len();
-            let between = Instant::now();
-            _ = distinct_permutations(0..k).collect_vec().len();
-            let between2 = Instant::now();
-            _ = distinct_derangements(0..k).collect_vec().len();
-            let after = Instant::now();
-            _ = derangements(0..k, k).collect_vec().len();
-            let after2 = Instant::now();
-
-            println!(
-                "{:?}, default perm {:?}, new perm {:?}, distinct perm {:?}, distinct derang {:?}, derang iter: {:?}; multiset ratio: {:?}, default ratio: {:?}",
-                k,
-                before - before_true,
-                between - before,
-                between2 - between,
-                after - between2,
-                after2 - after,
-                (after - between2).as_secs_f64() / (between2 - between).as_secs_f64(),
-                (after2 - after).as_secs_f64() / (between - before).as_secs_f64(),
-            )
+    fn test_nonrange_range() {
+        for k in 0..8 {
+            assert_equal(
+                derangements_range(k).into_iter().sorted(),
+                derangements(0..k, k).sorted(),
+            );
         }
     }
 
     #[test]
-    fn test_time() {
-        use std::time::Instant;
-        for k in 0..10 {
-            let before = Instant::now();
-            _ = derangements_range(k).len();
-            let between = Instant::now();
-            _ = derangements_range_fast(k).len();
-            let between2 = Instant::now();
-            _ = derangements_old(0..k, k).len();
-            let after = Instant::now();
-            _ = derangements(0..k, k).collect_vec().len();
-            let after2 = Instant::now();
-            _ = distinct_derangements(0..k).collect_vec().len();
-            let after3 = Instant::now();
-            println!(
-                "{:?}, range old {:?}, range new {:?}, non-range {:?}, iter: {:?}, distinct_iter: {:?}",
-                k,
-                between - before,
-                between2 - between,
-                after - between2,
-                after2 - after,
-                after3 - after2
-            )
-        }
+    fn test_nonrange_manual() {
+        assert_equal(derangements(vec![0usize, 2].into_iter(), 2), [[2, 0]]);
+        assert_equal(
+            derangements(vec![0u8, 1, 3].into_iter(), 3),
+            [[3, 0, 1], [1, 0, 3], [1, 3, 0]],
+        );
+        assert_equal(
+            derangements(vec![0usize, 1, 3].into_iter(), 2),
+            [[3, 0], [1, 0], [1, 3]],
+        );
+        assert_equal(
+            derangements(vec![0u16, 1, 1].into_iter(), 3),
+            [[1, 0, 1], [1, 0, 1]],
+        );
+        assert_equal(
+            derangements(vec![0usize, 1, 1].into_iter(), 2),
+            [[1, 0], [1, 0]],
+        );
     }
+
+    #[test]
+    fn test_nonrange_distinct() {
+        assert_equal(
+            distinct_derangements(vec![0u8, 1, 3].into_iter()),
+            [[3, 0, 1], [1, 3, 0], [1, 0, 3]],
+        );
+        assert_equal(
+            distinct_derangements(vec![0u16, 1, 1].into_iter()),
+            [[1, 0, 1]],
+        );
+    }
+
+    // Test to uncomment when I want to time performance - to convert into proper benchmark
+    // #[test]
+    // fn test_time() {
+    //     use std::time::Instant;
+    //     for k in 0..10 {
+    //         let before = Instant::now();
+    //         _ = derangements_range(k).len();
+    //         let between = Instant::now();
+    //         _ = derangements_range_fast(k).len();
+    //         let between2 = Instant::now();
+    //         _ = derangements_old(0..k, k).len();
+    //         let after = Instant::now();
+    //         _ = derangements(0..k, k).collect_vec().len();
+    //         let after2 = Instant::now();
+    //         _ = distinct_derangements(0..k).collect_vec().len();
+    //         let after3 = Instant::now();
+    //         println!(
+    //             "{:?}, range old {:?}, range new {:?}, non-range {:?}, iter: {:?}, distinct_iter: {:?}",
+    //             k,
+    //             between - before,
+    //             between2 - between,
+    //             after - between2,
+    //             after2 - after,
+    //             after3 - after2
+    //         )
+    //     }
+    // }
 }
