@@ -10,6 +10,35 @@ pub struct FastPermutations<I: Iterator> {
     k: usize,
 }
 
+/// Permute k or all elements of an iterable.
+///
+/// # Arguments
+///
+/// * `iterable`: the iterable of items to permute
+/// * `k`: `usize` integer that determines how many elements each permutation should have
+///
+/// returns: iterable with the permutations
+///
+/// # Examples
+///
+/// ```
+/// use itertools::{assert_equal, Itertools};
+/// use derangements::fast_permutations;
+///
+/// println!("{:?}", fast_permutations(vec![0usize, 1, 2].into_iter(), 3).collect_vec());
+///
+/// assert_equal(fast_permutations(vec![0usize, 1, 2].into_iter(), 3),
+/// [[0, 1, 2], [2, 0, 1], [0, 2, 1], [1, 0, 2], [2, 1, 0], [1, 2, 0]]);
+///
+/// // There can be repeated values in the input, which will not be deduplicated
+/// assert_equal(fast_permutations(vec![0usize, 1, 1].into_iter(), 3),
+/// [[0, 1, 1], [1, 0, 1], [0, 1, 1], [1, 0, 1], [1, 1, 0], [1, 1, 0]]);
+///
+/// // The length of the derangements can be shorter than the input iterable
+/// assert_equal(fast_permutations(vec![0usize, 1, 2].into_iter(), 2),
+/// [[0, 1], [2, 0], [0, 2], [1, 0], [2, 1], [1, 2]]);
+///
+/// ```
 pub fn fast_permutations<I>(iter: I, k: usize) -> FastPermutations<I>
 where
     I: Iterator,
@@ -99,6 +128,23 @@ pub struct DistinctPermutations<I: Iterator> {
     index: usize,
 }
 
+/// Permute k or all elements of an iterable without repetitions.
+///
+/// # Arguments
+///
+/// * `iterable`: the iterable of items to permute
+///
+/// returns: iterator over the permutations
+///
+/// # Examples
+///
+/// ```
+/// use itertools::{assert_equal, Itertools};
+/// use derangements::distinct_permutations;
+///
+/// assert_equal(distinct_permutations(vec![0usize, 1, 1].into_iter()),
+/// [[1, 1, 0], [0, 1, 1], [1, 0, 1]]);
+/// ```
 pub fn distinct_permutations<I>(iter: I) -> DistinctPermutations<I>
 where
     I: Iterator,

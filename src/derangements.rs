@@ -50,10 +50,10 @@ where
 ///
 /// # Arguments
 ///
-/// * `iterable`: `Vec<T>` with type T having Clone and `usize::TryFrom<T>`
+/// * `iterable`: the iterable of items to derange
 /// * `k`: `usize` integer that determines how many elements each derangement should have
 ///
-/// returns: `Vec<Vec<T>>`
+/// returns: iterable with the derangements
 ///
 /// # Examples
 ///
@@ -124,10 +124,9 @@ pub struct DistinctDerangements<I: Iterator> {
 ///
 /// # Arguments
 ///
-/// * `iterable`: `Vec<T>` containing the iterable of items of type `U` that have Clone and `usize::TryFrom<U>`
-/// * `k`: `usize` integer that determines how many elements each derangement should have
+/// * `iterable`: the iterable of items to derange
 ///
-/// returns: `Vec<Vec<U>>`
+/// returns: iterator over the derangements
 ///
 /// # Examples
 ///
