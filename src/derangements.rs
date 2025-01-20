@@ -46,6 +46,31 @@ where
     debug_fmt_fields!(Derangements, permutations);
 }
 
+/// Derange k or all elements of an iterable.
+///
+/// # Arguments
+///
+/// * `iterable`: `Vec<T>` with type T having Clone and `usize::TryFrom<T>`
+/// * `k`: `usize` integer that determines how many elements each derangement should have
+///
+/// returns: `Vec<Vec<T>>`
+///
+/// # Examples
+///
+/// ```
+/// use itertools::{assert_equal, Itertools};
+/// use derangements::derangements;
+/// assert_equal(derangements(vec![0usize, 1, 2].into_iter(), 3), [[2, 0, 1], [1, 2, 0]]);
+///
+/// // There can be repeated values in the input, which will not be deduplicated
+/// assert_equal(derangements(vec![0usize, 1, 1].into_iter(), 3), [[1, 0, 1], [1, 0, 1]]);
+///
+/// // The length of the derangements can be shorter than the input iterable
+/// assert_equal(derangements(vec![0usize, 1, 2].into_iter(), 2), [[2, 0], [1, 0], [1, 2]]);
+///
+/// // There can be values that are outside the range of the indices
+/// assert_equal(derangements(vec![0usize, 1, 7].into_iter(), 3), [[7, 0, 1], [1, 0, 7], [1, 7, 0]]);
+/// ```
 pub fn derangements<I>(iter: I, k: usize) -> Derangements<I>
 where
     I: Iterator,
@@ -95,6 +120,28 @@ pub struct DistinctDerangements<I: Iterator> {
     index: usize,
 }
 
+/// Derange k or all elements of an iterable without repetitions.
+///
+/// # Arguments
+///
+/// * `iterable`: `Vec<T>` containing the iterable of items of type `U` that have Clone and `usize::TryFrom<U>`
+/// * `k`: `usize` integer that determines how many elements each derangement should have
+///
+/// returns: `Vec<Vec<U>>`
+///
+/// # Examples
+///
+/// ```
+/// use itertools::{assert_equal, Itertools};
+/// use derangements::distinct_derangements;
+/// assert_equal(distinct_derangements(vec![0usize, 1, 2].into_iter()), [[2, 0, 1], [1, 2, 0]]);
+///
+/// // There can be repeated values in the input, which will not be deduplicated
+/// assert_equal(distinct_derangements(vec![0usize, 1, 1].into_iter()), [[1, 0, 1]]);
+///
+/// // There can be values that are outside the range of the indices
+/// assert_equal(distinct_derangements(vec![0usize, 1, 7].into_iter()), [[7, 0, 1], [1, 7, 0], [1, 0, 7]]);
+/// ```
 pub fn distinct_derangements<I>(iter: I) -> DistinctDerangements<I>
 where
     I: Iterator,
