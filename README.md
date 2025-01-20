@@ -35,11 +35,13 @@ Ideally the following would be added or explored:
   - add more tests for restricted permutations
   - add more tests for fast permutations
   - update test in lib.rs for default usage
+  - remove timing tests (or comment them out so I can quickly get them back -> to turn into proper benchmark later)
 - Explore creating an iterable for a faster derangement_range as well (if that is faster) - or otherwise just remove
 - Consider introducing `derangements_by_value` here as well to keep naming consistent with Python's `more_itertools`
 - Investigate alternative method to speed up when we don't want to drop duplicates
   - Intuitively, it should be faster to not account for it, with the right algorithm
   - Alternative, we could "repeat" items that need to be duplicated by calculating a "duplication" metric
+- Make usize parameter any generic integer (or at least any unsigned integer)
 
 If you have more ideas, let me know!
 
