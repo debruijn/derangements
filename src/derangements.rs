@@ -276,6 +276,7 @@ mod tests {
     // Test to uncomment when I want to time performance - to convert into proper benchmark
     // #[test]
     // fn test_time() {
+    //     use crate::derangements_range_fast;
     //     use std::time::Instant;
     //     for k in 0..10 {
     //         let before = Instant::now();
@@ -283,14 +284,13 @@ mod tests {
     //         let between = Instant::now();
     //         _ = derangements_range_fast(k).len();
     //         let between2 = Instant::now();
-    //         _ = derangements_old(0..k, k).len();
     //         let after = Instant::now();
     //         _ = derangements(0..k, k).collect_vec().len();
     //         let after2 = Instant::now();
     //         _ = distinct_derangements(0..k).collect_vec().len();
     //         let after3 = Instant::now();
     //         println!(
-    //             "{:?}, range old {:?}, range new {:?}, non-range {:?}, iter: {:?}, distinct_iter: {:?}",
+    //             "{:?}, range old {:?}, range new {:?}, nothing {:?}, iter: {:?}, distinct_iter: {:?}",
     //             k,
     //             between - before,
     //             between2 - between,
