@@ -136,6 +136,87 @@ pub fn derangements_range_fast(n: usize) -> Vec<Vec<usize>> {
         }
     }
 }
+//
+// #[derive(Debug, Clone)]
+// pub struct DerangementsRange {
+//     lag1_done: bool,
+//     lag: Rc<Option<DerangementsRange>>,
+//     n: usize,
+//     curr_lag: Vec<usize>,
+//     count: usize,
+// }
+//
+// pub fn derangements_by_range(n: usize) -> DerangementsRange {
+//     let lag = if n >= 2 {
+//         Some(derangements_by_range(n.saturating_sub(1)))
+//     } else {
+//         None
+//     };
+//     DerangementsRange {
+//         lag1_done: false,
+//         lag: Rc::new(lag),
+//         n,
+//         curr_lag: vec![],
+//         count: n.saturating_sub(1),
+//     }
+// }
+//
+// impl Iterator for DerangementsRange {
+//     type Item = Vec<usize>;
+//
+//     fn next(&mut self) -> Option<Self::Item> {
+//         match self.n {
+//             0 => {
+//                 return if self.lag1_done {
+//                     None
+//                 } else {
+//                     self.lag1_done = true;
+//                     Some(vec![])
+//                 }
+//             }
+//             1 => return None,
+//             _ => {}
+//         };
+//
+//         // FIRST LAG
+//         // If at full count: get new draw from lagged derangement
+//         // Add new iter from it and return
+//         // If new draw is None, set lag1_done to true and go to second part
+//         let threshold = if self.lag1_done { self.n - 1 } else { self.n };
+//         if self.count == threshold {
+//             if self.lag1_done {
+//                 return None;
+//             };
+//             self.count = 0;
+//             let a = &mut self.lag;
+//             let b = &a.unwrap();
+//             let next = &b.next();
+//             // let next = self.lag.next();
+//             match next {
+//                 None => {
+//                     self.lag1_done = true;
+//                     self.lag = Rc::new(Option::from(derangements_by_range(self.n - 2)));
+//                     let next2 = (&mut self).lag.as_mut().unwrap().next();
+//                     match next2 {
+//                         None => return None,
+//                         Some(x) => self.curr_lag = x,
+//                     }
+//                 }
+//                 Some(x) => self.curr_lag = x,
+//             }
+//         }
+//
+//         self.count += 1;
+//         let mut new = self.curr_lag.clone();
+//         if !self.lag1_done {
+//             new.push(self.n - 1);
+//         } else {
+//             new.push(self.n - 1);
+//             new.push(self.n - 1);
+//         }
+//         Some(new)
+//     }
+// }
 
 #[cfg(test)]
 mod tests {
@@ -194,4 +275,9 @@ mod tests {
             );
         }
     }
+
+    // #[test]
+    // fn test_range_via_iter() {
+    //     println!("{:?}", derangements_by_range(3).collect_vec());
+    // }
 }
