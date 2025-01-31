@@ -40,6 +40,7 @@ Ideally the following would be added or explored:
   - I still need to update tests and remove the old range based functions
   - I want to look into 2-step lags only as well -> can be faster to avoid generating lags in between
     - "Lag1" would then be replaced by adding 2 elements and swapping both with a double-looped index
+    - This requires toggles: are we running for part 1 or 2 (without new curr_lag) and double count trackers
 - Consider introducing `derangements_by_value` here as well to keep naming consistent with Python's `more_itertools`
   - I will only consider this after a release of `more_itertools` with that naming in it as well
 - Investigate alternative method to speed up when we don't want to drop duplicates
