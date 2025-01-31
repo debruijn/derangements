@@ -23,8 +23,6 @@ mod fast_permutations;
 mod restricted_permutations;
 
 pub use derangements_range::derangements_by_range;
-pub use derangements_range::derangements_range;
-pub use derangements_range::derangements_range_fast;
 
 pub use restricted_permutations::restricted_permutations;
 pub use restricted_permutations::restricted_permutations_by_map_index;

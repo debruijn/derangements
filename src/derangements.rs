@@ -273,33 +273,31 @@ mod tests {
         );
     }
 
-    // Test to uncomment when I want to time performance - to convert into proper benchmark
-    #[test]
-    fn test_time() {
-        use crate::derangements_range;
-        use crate::derangements_range_fast;
-        use std::time::Instant;
-        for k in 0..10 {
-            let before = Instant::now();
-            _ = derangements_range(k).len();
-            let between = Instant::now();
-            _ = derangements_range_fast(k).len();
-            let between2 = Instant::now();
-            _ = derangements_by_range(k).collect_vec().len();
-            let after = Instant::now();
-            _ = derangements(0..k, k).collect_vec().len();
-            let after2 = Instant::now();
-            _ = distinct_derangements(0..k).collect_vec().len();
-            let after3 = Instant::now();
-            println!(
-                "{:?}, range old {:?}, range new {:?}, range iter {:?}, iter: {:?}, distinct_iter: {:?}",
-                k,
-                between - before,
-                between2 - between,
-                after - between2,
-                after2 - after,
-                after3 - after2
-            )
-        }
-    }
+    // // Test to uncomment when I want to time performance - to convert into proper benchmark
+    // #[test]
+    // fn test_time() {
+    //     use std::time::Instant;
+    //     for k in 0..10 {
+    //         let before = Instant::now();
+    //         _ = distinct_derangements(0..k).collect_vec().len();
+    //         let between = Instant::now();
+    //         // _ = derangements_range_fast(k).len();
+    //         let between2 = Instant::now();
+    //         _ = derangements_by_range(k).collect_vec().len();
+    //         let after = Instant::now();
+    //         _ = derangements(0..k, k).collect_vec().len();
+    //         let after2 = Instant::now();
+    //         _ = distinct_derangements(0..k).collect_vec().len();
+    //         let after3 = Instant::now();
+    //         println!(
+    //             "{:?}, removed {:?}, removed {:?}, range iter {:?}, iter: {:?}, distinct_iter: {:?}",
+    //             k,
+    //             between - before,
+    //             between2 - between,
+    //             after - between2,
+    //             after2 - after,
+    //             after3 - after2
+    //         )
+    //     }
+    // }
 }
