@@ -22,6 +22,7 @@ mod derangements_range;
 mod fast_permutations;
 mod restricted_permutations;
 
+pub use derangements_range::derangements_by_range;
 pub use derangements_range::derangements_range;
 pub use derangements_range::derangements_range_fast;
 
