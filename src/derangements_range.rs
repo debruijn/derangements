@@ -287,11 +287,4 @@ mod tests {
             );
         }
     }
-
-    #[test]
-    fn test_range_via_iter() {
-        let k = 4;
-        println!("{:?}", derangements_by_range(k).collect_vec());
-        println!("{:?}", derangements_range(k));
-    }
 }
